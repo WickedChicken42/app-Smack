@@ -1,5 +1,5 @@
 //
-//  LoginVC.swift
+//  CreateAccountVC.swift
 //  app-Smack
 //
 //  Created by James Ullom on 9/6/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginVC: UIViewController {
+class CreateAccountVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,15 +21,10 @@ class LoginVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+
     @IBAction func closePressed(_ sender: Any) {
-        // Closes the current VC and returns to the VC that called it
-        dismiss(animated: true, completion: nil)
+        // Created an unwind segue to take us back to the ChannelVC.  Call the performSegue instead of Dismiss to perform the unwind back.
+        performSegue(withIdentifier: UNWIND, sender: nil)
     }
     
-    @IBAction func createAccountBtnPressed(_ sender: Any) {
-        // Enacts the segue to show the CreateAccountVC
-        performSegue(withIdentifier: TO_CREATE_ACCOUNT, sender: nil)
-    }
-   
-
 }

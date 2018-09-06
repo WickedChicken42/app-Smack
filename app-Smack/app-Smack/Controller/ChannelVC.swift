@@ -14,6 +14,9 @@ import UIKit
 class ChannelVC: UIViewController {
 
     @IBOutlet var loginBtn: UIButton!
+    // Defined this function so that we could unwind from the CreateAccountVC back to here.  After this line is added you need to Contrl-drag from the VC's yellow dot to the Exit square and select this func
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {}
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,6 +26,7 @@ class ChannelVC: UIViewController {
 
   
     @IBAction func loginBtnPressed(_ sender: Any) {
+        // Enacts the segue to show the LoginVC
         performSegue(withIdentifier: TO_LOGIN, sender: nil)
         
     }
