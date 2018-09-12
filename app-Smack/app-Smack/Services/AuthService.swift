@@ -45,19 +45,21 @@ class AuthService {
         // make sure there are no capital letter in the email address
         let lowerCaseEmail = email.lowercased()
 
+        // Define the header to be used with the Register posting
         let header = [
             "Content-type": "application/json; charset=utf-8"
         ]
 
-        // Define the body of the JSON
+        // Define the body of the request
         let body: [String: Any] = [
             "email": lowerCaseEmail,
             "password": password
         ]
 
-        // Create the web request
+        // Create the web request using Alamofire
+        // Using responseString this time because thats what the request will return but normally we would use .responseJSON to handle returning JSON data
         Alamofire.request(URL_REGISTER, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseString { (response) in
-            
+            // Handling the response given back and setting the completion handler to True/False as a result
             if response.result.error == nil {
                 completion(true)
             } else {
