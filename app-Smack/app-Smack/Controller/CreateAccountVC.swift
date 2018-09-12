@@ -15,6 +15,9 @@ class CreateAccountVC: UIViewController {
     @IBOutlet var userPasswordTxt: UITextField!
     @IBOutlet var userImg: UIImageView!
     
+    var avatarName: String = "profileDefault"
+    var avatarColor: String = "[0.5,0.5,1]" // Default light gray color
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -41,18 +44,25 @@ class CreateAccountVC: UIViewController {
     @IBAction func createAccountPressed(_ sender: Any) {
  
         // Using Guard Let allows for protection against optional variables being nil (unwrapped as "" for string).  If the guard let is successful, the var is set and usable throughout the function.  If it is unsuccessful we perform a quick exit (return) from the function.  The guard let is an improvement on the older "if let" syntax.
+        guard let name = userNameTxt.text, name != "" else { return }
         guard let email = userEmailTxt.text, email != "" else { return }
         guard let password = userPasswordTxt.text, password != "" else { return }
         
         // Calling thre AuthServoice's registerUser function with a completion function for "success"
         AuthService.instance.registerUser(email: email, password: password) { (success) in
             if success {
+                print("registered user")
                 AuthService.instance.loginUser(email: email, password: password, completion: { (success) in
                     if success {
                         print("logged in user!", AuthService.instance.authToken)
+                        AuthService.instance.createUser(name: name, email: email, avatarName: self.avatarName, avatarColor: self.avatarColor, completion: { (success) in
+                            if success {
+                                print(UserDataService.instance.name, UserDataService.instance.avatarName)
+                                self.performSegue(withIdentifier: UNWIND, sender: nil)
+                            }
+                        })
                     }
                 })
-                print("registered user")
             }
         }
     }
