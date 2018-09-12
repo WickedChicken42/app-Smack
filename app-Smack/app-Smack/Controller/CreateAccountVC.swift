@@ -47,9 +47,18 @@ class CreateAccountVC: UIViewController {
         // Calling thre AuthServoice's registerUser function with a completion function for "success"
         AuthService.instance.registerUser(email: email, password: password) { (success) in
             if success {
+                AuthService.instance.loginUser(email: email, password: password, completion: { (success) in
+                    if success {
+                        print("logged in user!", AuthService.instance.authToken)
+                    }
+                })
                 print("registered user")
             }
         }
+    }
+    
+    func loginUser() {
+        
     }
     
 }

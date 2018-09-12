@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 class AuthService {
     // Creating the Singleton instance so that there is only ever one in the app
@@ -67,8 +68,52 @@ class AuthService {
                 debugPrint(response.result.error as Any)
             }
         }
-        
-        
     }
     
+    func loginUser(email: String, password: String, completion: @escaping CompletionHandler) {
+        
+        // make sure there are no capital letter in the email address
+        let lowerCaseEmail = email.lowercased()
+        
+        // Define the header to be used with the Register posting
+        let header = [
+            "Content-type": "application/json; charset=utf-8"
+        ]
+        
+        // Define the body of the request
+        let body: [String: Any] = [
+            "email": lowerCaseEmail,
+            "password": password
+        ]
+        
+        // Create the web request using Alamofire
+        // Using responseJSON this time because thats what the request will return JSON data
+        Alamofire.request(URL_LOGIN, method: .post, parameters: body, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+            // Handling the response given back and setting the completion handler to True/False as a result
+            if response.result.error == nil {
+                // *** Classic JSON handling
+//                if let json = response.result.value as? Dictionary<String, Any> {
+//                    if let email = json["user"] as? String {
+//                        self.userEmail = email
+//                    }
+//                    if let token = json["token"] as? String {
+//                        self.authToken = token
+//                    }
+//                }
+                
+                // *** The SwiftyJSON way to process JSON
+                guard let data = response.data else { return }
+                let json = JSON(data)
+                self.userEmail = json["user"].stringValue
+                self.authToken = json["token"].stringValue
+                
+                self.isLoggedIn = true
+                completion(true)
+            } else {
+                completion(false)
+                debugPrint(response.result.error as Any)
+            }
+        }
+
+    }
 }
