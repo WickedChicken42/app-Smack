@@ -544,12 +544,17 @@
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6q-QR-7fW">
-                                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q6q-QR-7fW">
+                                                    <rect key="frame" x="10" y="10" width="80" height="80"/>
                                                 </imageView>
                                             </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Q6q-QR-7fW" secondAttribute="trailing" constant="10" id="5W2-ks-bBg"/>
+                                            <constraint firstAttribute="bottom" secondItem="Q6q-QR-7fW" secondAttribute="bottom" constant="10" id="EEF-qd-kCU"/>
+                                            <constraint firstItem="Q6q-QR-7fW" firstAttribute="leading" secondItem="ojF-8P-27E" secondAttribute="leading" constant="10" id="NRE-wo-j8R"/>
+                                            <constraint firstItem="Q6q-QR-7fW" firstAttribute="top" secondItem="ojF-8P-27E" secondAttribute="top" constant="10" id="djT-oU-X3W"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="avatarImg" destination="Q6q-QR-7fW" id="asF-ov-ERH"/>
                                         </connections>
