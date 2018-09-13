@@ -303,13 +303,22 @@
                                 <state key="normal" title="Login">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="loginBtnPressed:" destination="c8m-HH-0cY" eventType="touchUpInside" id="Ekn-4G-aQk"/>
+                                </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="aCE-ry-Oac">
+                                <rect key="frame" x="169" y="215" width="37" height="37"/>
+                                <color key="color" red="0.0604650059" green="0.15652179869999999" blue="0.77298440209999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="aCE-ry-Oac" firstAttribute="centerX" secondItem="ybe-dx-QRY" secondAttribute="centerX" id="3Xf-Pb-8WY"/>
                             <constraint firstItem="VYS-6a-NeY" firstAttribute="centerX" secondItem="ybe-dx-QRY" secondAttribute="centerX" id="68V-n7-G64"/>
                             <constraint firstAttribute="trailingMargin" secondItem="sKd-jD-T21" secondAttribute="trailing" id="8h6-zF-WSk"/>
                             <constraint firstItem="sKd-jD-T21" firstAttribute="top" secondItem="NcH-K0-zcN" secondAttribute="top" constant="8" id="JJ0-Eg-tEv"/>
+                            <constraint firstItem="aCE-ry-Oac" firstAttribute="centerY" secondItem="ybe-dx-QRY" secondAttribute="centerY" constant="-100" id="NRt-g1-8wR"/>
                             <constraint firstItem="sLu-my-MKb" firstAttribute="centerX" secondItem="ybe-dx-QRY" secondAttribute="centerX" id="Spd-Ft-Q0s"/>
                             <constraint firstItem="nDF-mF-UFU" firstAttribute="top" secondItem="VYS-6a-NeY" secondAttribute="bottom" id="VmR-5Q-PV4"/>
                             <constraint firstItem="nDF-mF-UFU" firstAttribute="centerX" secondItem="ybe-dx-QRY" secondAttribute="centerX" id="X9I-Cd-QyY"/>
@@ -320,6 +329,9 @@
                         <viewLayoutGuide key="safeArea" id="NcH-K0-zcN"/>
                     </view>
                     <connections>
+                        <outlet property="passwordTxt" destination="9dB-Bu-CFB" id="Uzh-y8-Lyr"/>
+                        <outlet property="spinner" destination="aCE-ry-Oac" id="fho-MM-ugd"/>
+                        <outlet property="userNameTxt" destination="RNp-Iq-YP8" id="9Qq-0a-w7a"/>
                         <segue destination="MwL-g3-AZd" kind="show" identifier="toCreateAccount" id="UaT-I0-zMq"/>
                     </connections>
                 </viewController>
@@ -423,7 +435,7 @@
                                 <color key="textColor" red="0.25882352939999997" green="0.3294117647" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileDefault" translatesAutoresizingMaskIntoConstraints="NO" id="8Vu-an-7tN">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileDefault" translatesAutoresizingMaskIntoConstraints="NO" id="8Vu-an-7tN" customClass="CircleImage" customModule="app_Smack" customModuleProvider="target">
                                 <rect key="frame" x="137" y="319" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="Hd0-Gb-IHe"/>
@@ -459,6 +471,10 @@
                                     <action selector="createAccountBtnPressed:" destination="c8m-HH-0cY" eventType="touchUpInside" id="zWn-3l-7P3"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="cuR-WV-NCm">
+                                <rect key="frame" x="169" y="215" width="37" height="37"/>
+                                <color key="color" red="0.25882352939999997" green="0.3294117647" blue="0.72549019609999998" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -472,15 +488,18 @@
                             <constraint firstItem="DNh-MM-2V2" firstAttribute="top" secondItem="ZAq-kC-5yv" secondAttribute="bottom" constant="20" id="XU2-Cq-61z"/>
                             <constraint firstItem="zdg-fC-UDz" firstAttribute="top" secondItem="KOT-XO-2ol" secondAttribute="bottom" constant="40" id="ZfO-mm-h0V"/>
                             <constraint firstItem="8Vu-an-7tN" firstAttribute="centerX" secondItem="U38-S2-sbD" secondAttribute="centerX" id="a7H-A9-G42"/>
+                            <constraint firstItem="cuR-WV-NCm" firstAttribute="centerY" secondItem="U38-S2-sbD" secondAttribute="centerY" constant="-100" id="c31-Xc-ahh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Kvx-uw-NB9" secondAttribute="trailing" id="g5b-fZ-ErN"/>
                             <constraint firstItem="DNh-MM-2V2" firstAttribute="centerX" secondItem="U38-S2-sbD" secondAttribute="centerX" id="gZh-WZ-0Ib"/>
                             <constraint firstItem="Kvx-uw-NB9" firstAttribute="top" secondItem="wo9-Rn-ACE" secondAttribute="top" constant="8" id="iaq-0i-OjZ"/>
                             <constraint firstItem="ZAq-kC-5yv" firstAttribute="centerX" secondItem="U38-S2-sbD" secondAttribute="centerX" id="mOt-eY-Rwx"/>
+                            <constraint firstItem="cuR-WV-NCm" firstAttribute="centerX" secondItem="U38-S2-sbD" secondAttribute="centerX" id="rn5-jX-nm4"/>
                             <constraint firstItem="F9D-Wi-VJM" firstAttribute="centerX" secondItem="U38-S2-sbD" secondAttribute="centerX" id="yj1-WK-Clr"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wo9-Rn-ACE"/>
                     </view>
                     <connections>
+                        <outlet property="spinner" destination="cuR-WV-NCm" id="EQm-Fy-Kvg"/>
                         <outlet property="userEmailTxt" destination="uYd-1a-IYJ" id="99B-K6-EUl"/>
                         <outlet property="userImg" destination="8Vu-an-7tN" id="zNJ-jt-ZHq"/>
                         <outlet property="userNameTxt" destination="Osa-DP-JV2" id="xra-XE-ZAW"/>
@@ -544,7 +563,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q6q-QR-7fW">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q6q-QR-7fW" customClass="CircleImage" customModule="app_Smack" customModuleProvider="target">
                                                     <rect key="frame" x="10" y="10" width="80" height="80"/>
                                                 </imageView>
                                             </subviews>

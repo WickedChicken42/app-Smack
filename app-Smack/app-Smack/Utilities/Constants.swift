@@ -27,3 +27,14 @@ let UNWIND = "unwindToChannel"
 let TOKEN_KEY = "token"
 let LOGGED_IN_KEY = "loggedIn"
 let USER_EMAIL = "userEmail"
+
+// Colors
+let SMACK_PURPLE_PLACEHOLDER = #colorLiteral(red: 0.01687073149, green: 0.1594210565, blue: 0.8048419356, alpha: 0.5)
+
+// Notification Constants
+let NOTIF_USER_DATA_DID_CHANGE = Notification.Name("notifUserDataChanged")
+enum UserNotificationType {
+    case login
+    case logout
+    case other
+}
