@@ -36,12 +36,7 @@ class CreateAccountVC: UIViewController {
             }
         }
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-
     @IBAction func closePressed(_ sender: Any) {
         // Created an unwind segue to take us back to the ChannelVC.  Call the performSegue instead of Dismiss to perform the unwind back.
         performSegue(withIdentifier: UNWIND, sender: nil)
@@ -65,7 +60,7 @@ class CreateAccountVC: UIViewController {
             self.userImg.backgroundColor = self.bgColor
         }
         
-        avatarColor = "[\(r),\(g),\(b)]"
+        avatarColor = "[\(r),\(g),\(b),1]"
     }
 
     @IBAction func createAccountPressed(_ sender: Any) {
@@ -74,9 +69,9 @@ class CreateAccountVC: UIViewController {
         startSpinner(isActive: true)
         
         // Using Guard Let allows for protection against optional variables being nil (unwrapped as "" for string).  If the guard let is successful, the var is set and usable throughout the function.  If it is unsuccessful we perform a quick exit (return) from the function.  The guard let is an improvement on the older "if let" syntax.
-        guard let name = userNameTxt.text, name != "" else { return }
-        guard let email = userEmailTxt.text, email != "" else { return }
-        guard let password = userPasswordTxt.text, password != "" else { return }
+        guard let name = userNameTxt.text, userNameTxt.text != "" else { return }
+        guard let email = userEmailTxt.text, userEmailTxt.text != "" else { return }
+        guard let password = userPasswordTxt.text, userPasswordTxt.text != "" else { return }
         
         // Calling thre AuthServoice's registerUser function with a completion function for "success"
         AuthService.instance.registerUser(email: email, password: password) { (success) in
@@ -85,6 +80,7 @@ class CreateAccountVC: UIViewController {
                 AuthService.instance.loginUser(email: email, password: password, completion: { (success) in
                     if success {
                         print("logged in user!", AuthService.instance.authToken)
+                        
                         AuthService.instance.createUser(name: name, email: email, avatarName: self.avatarName, avatarColor: self.avatarColor, completion: { (success) in
                             if success {
                                 print(UserDataService.instance.name, UserDataService.instance.avatarName)
@@ -94,7 +90,7 @@ class CreateAccountVC: UIViewController {
                                 self.startSpinner(isActive: false)
                                 
                                 // Telling notification center that the user data has changed - added a N
-                                NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: UserNotificationType.login)
+                                NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
                             }
                         })
                     }

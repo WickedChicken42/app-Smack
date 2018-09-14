@@ -110,6 +110,7 @@ class AuthService {
                 self.isLoggedIn = true
                 completion(true)
             } else {
+                self.isLoggedIn = false
                 completion(false)
                 debugPrint(response.result.error as Any)
             }
@@ -160,4 +161,51 @@ class AuthService {
         }
 
     }
+
+    func findUserByEmail(completion: @escaping CompletionHandler) {
+        
+        // make sure there are no capital letter in the email address
+        let lowerCaseEmail = self.userEmail.lowercased()
+        
+        // Define the header to be used with the Register posting
+        let header = [
+            "Content-type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + AuthService.instance.authToken
+        ]
+
+        // No body needed in the GET request
+//        let body: [String: Any] = [
+//           "email": lowerCaseEmail,
+//            "password": password
+//        ]
+        
+        // Create the web request using Alamofire
+        // Using responseJSON this time because thats what the request will return JSON data
+        Alamofire.request(URL_GET_USER_BY_EMAIL + lowerCaseEmail, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+            // Handling the response given back and setting the completion handler to True/False as a result
+            if response.result.error == nil {
+                // *** The SwiftyJSON way to process JSON
+                guard let data = response.data else { return }
+                let json = JSON(data)
+
+                let id = json["_id"].stringValue
+                let name = json["name"].stringValue
+                let avatarColor = json["avatarColor"].stringValue
+                let avatarName = json["avatarName"].stringValue
+                let email = json["email"].stringValue
+
+                // Set the User instance values via its function since the setters are all Private
+                UserDataService.instance.setUserData(id: id, color: avatarColor, avatarName: avatarName, email: email, name: name)
+
+                self.isLoggedIn = true
+                completion(true)
+            } else {
+                self.isLoggedIn = false
+                completion(false)
+                debugPrint(response.result.error as Any)
+            }
+        }
+        
+    }
+
 }

@@ -25,6 +25,12 @@ class ChatVC: UIViewController {
         view.addGestureRecognizer(revealViewController().panGestureRecognizer())
         // Allows for tapping the screen to close re-slide the screen back
         view.addGestureRecognizer(revealViewController().tapGestureRecognizer())
+        
+        if AuthService.instance.isLoggedIn {
+            AuthService.instance.findUserByEmail(completion: { (success) in
+                NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
+            })
+        }
     }
 
 }

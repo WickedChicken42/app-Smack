@@ -121,7 +121,7 @@
                                     <action selector="loginBtnPressed:" destination="9wr-Q6-v2P" eventType="touchUpInside" id="twh-c5-mKN"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menuProfileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="wj9-Zg-VOS">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menuProfileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="wj9-Zg-VOS" customClass="CircleImage" customModule="app_Smack" customModuleProvider="target">
                                 <rect key="frame" x="16" y="587" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="MYQ-Q7-X8w"/>
@@ -188,6 +188,7 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
+                        <outlet property="avatarImg" destination="wj9-Zg-VOS" id="RVT-TQ-bl9"/>
                         <outlet property="loginBtn" destination="S6z-UJ-KnU" id="zhW-fY-KCj"/>
                         <segue destination="c8m-HH-0cY" kind="show" identifier="toLogin" id="KuZ-Id-0xi"/>
                     </connections>
@@ -249,7 +250,7 @@
                             <stackView opaque="NO" tag="40" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="top" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="sLu-my-MKb">
                                 <rect key="frame" x="62.5" y="195" width="250" height="86"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RNp-Iq-YP8">
+                                    <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RNp-Iq-YP8">
                                         <rect key="frame" x="0.0" y="0.0" width="250" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="250" id="pL9-N6-keC"/>
@@ -329,9 +330,9 @@
                         <viewLayoutGuide key="safeArea" id="NcH-K0-zcN"/>
                     </view>
                     <connections>
+                        <outlet property="emailTxt" destination="RNp-Iq-YP8" id="9Qq-0a-w7a"/>
                         <outlet property="passwordTxt" destination="9dB-Bu-CFB" id="Uzh-y8-Lyr"/>
                         <outlet property="spinner" destination="aCE-ry-Oac" id="fho-MM-ugd"/>
-                        <outlet property="userNameTxt" destination="RNp-Iq-YP8" id="9Qq-0a-w7a"/>
                         <segue destination="MwL-g3-AZd" kind="show" identifier="toCreateAccount" id="UaT-I0-zMq"/>
                     </connections>
                 </viewController>
