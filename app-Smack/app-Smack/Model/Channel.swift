@@ -27,4 +27,11 @@ struct Channel : Decodable {
     var channelDescription: String! { get { return description } set { description = newValue } }
     var id: String! { get { return _id } set { _id = newValue } }
 
+    init(channelTitle title: String, channelDescription desc: String, id: String) {
+        
+        name = title
+        description = desc
+        _id = id
+    }
+
 }

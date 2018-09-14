@@ -10,7 +10,7 @@ import UIKit
 
 class AddChannelVC: UIViewController {
 
-    @IBOutlet var channelName: UITextField!
+    @IBOutlet var chanName: UITextField!
     @IBOutlet var chanDesc: UITextField!
     @IBOutlet var bgView: UIView!
     
@@ -27,7 +27,18 @@ class AddChannelVC: UIViewController {
     
     @IBAction func createChannelPressed(_ sender: Any) {
         
+        // Get the values we want to send to the server
+        guard let channelName = chanName.text, chanName.text != "" else { return }
+        guard let channelDesc = chanDesc.text, chanDesc.text != "" else { return }
+        
+        // Emit the new channel to be created on the server
+        SocketService.instance.addChannel(channelName: channelName, channelDesc: channelDesc) { (success) in
+            if success {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
+    
     
     func setupView() {
         
@@ -35,7 +46,7 @@ class AddChannelVC: UIViewController {
         bgView.addGestureRecognizer(closeTouch)
         
         // Set the placeholder text to the color purple
-        channelName.attributedPlaceholder = NSAttributedString(string: "name", attributes: [NSAttributedStringKey.foregroundColor : SMACK_PURPLE_PLACEHOLDER])
+        chanName.attributedPlaceholder = NSAttributedString(string: "name", attributes: [NSAttributedStringKey.foregroundColor : SMACK_PURPLE_PLACEHOLDER])
         chanDesc.attributedPlaceholder = NSAttributedString(string: "description", attributes: [NSAttributedStringKey.foregroundColor : SMACK_PURPLE_PLACEHOLDER])
 
     }

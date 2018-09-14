@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "app-Smack/Controller/ChatVC.swift"
-            timestampString = "558645889.04931"
+            timestampString = "558650673.222939"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "19"
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "app-Smack/Controller/ChannelVC.swift"
-            timestampString = "558645889.049372"
+            timestampString = "558650673.223045"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "userDataDidChange(_:)"
             landmarkType = "7">
          </BreakpointContent>

@@ -13,7 +13,7 @@
             <connections>
                 <outlet property="bgView" destination="guR-ks-q1t" id="haK-yv-lvz"/>
                 <outlet property="chanDesc" destination="CkF-3w-tCn" id="cES-Qy-cIB"/>
-                <outlet property="channelName" destination="N1H-Ol-gz5" id="5H9-k5-FQC"/>
+                <outlet property="chanName" destination="N1H-Ol-gz5" id="5H9-k5-FQC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
