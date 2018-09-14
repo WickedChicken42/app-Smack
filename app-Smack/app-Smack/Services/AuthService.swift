@@ -207,5 +207,14 @@ class AuthService {
         }
         
     }
+    
+    func logoutUser() {
+        
+        self.isLoggedIn = false
+        self.authToken = ""
+        self.userEmail = ""
+        
+        UserDataService.instance.clearUserData()
+    }
 
 }

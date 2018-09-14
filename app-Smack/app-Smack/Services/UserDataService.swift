@@ -18,6 +18,7 @@ class UserDataService {
     public private(set) var avatarName = ""
     public private(set) var email = ""
     public private(set) var name = ""
+    
     public private(set) var avatarUIColor = UIColor.lightGray
     
     func setUserData(id: String, color: String, avatarName: String, email: String, name: String) {
@@ -29,6 +30,17 @@ class UserDataService {
         
         // Convert the color string into a UIColor propery for easy retreval
         avatarUIColor = returnUIColor(components: color)
+    }
+    
+    func clearUserData() {
+        self.id = ""
+        self.avatarColor = ""
+        self.avatarName = ""
+        self.email = ""
+        self.name = ""
+        
+        // Convert the color string into a UIColor propery for easy retreval
+        avatarUIColor = UIColor.lightGray
     }
     
     func setAvatarName(avatarName: String) {
