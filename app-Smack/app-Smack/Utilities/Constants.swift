@@ -35,8 +35,5 @@ let SMACK_PURPLE_PLACEHOLDER = #colorLiteral(red: 0.01687073149, green: 0.159421
 
 // Notification Constants
 let NOTIF_USER_DATA_DID_CHANGE = Notification.Name("notifUserDataChanged")
-enum UserNotificationType {
-    case login
-    case logout
-    case other
-}
+let NOTIF_CHANNELS_LOADED = Notification.Name("channelsLoaded")
+let NOTIF_CHANNEL_SELECTED = Notification.Name("channelSelected")

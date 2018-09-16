@@ -30,7 +30,9 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         revealViewController().rearViewRevealWidth = view.frame.size.width - 60
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChannelVC.userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
-        
+
+        NotificationCenter.default.addObserver(self, selector: #selector(ChannelVC.channelsLoaded(_:)), name: NOTIF_CHANNELS_LOADED, object: nil)
+
         SocketService.instance.getChannel { (success) in
             if success {
                 self.tableView.reloadData()
@@ -42,17 +44,24 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @objc func userDataDidChange(_ notif: Notification) {
         setupUserInfo()
     }
-  
+
+    @objc func channelsLoaded(_ notif: Notification) {
+        tableView.reloadData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         setupUserInfo()
     }
     
     @IBAction func addChannelPressed(_ sender: Any) {
         
-        // Create and present the addChannelVC in a modal presentation
-        let addChannel = AddChannelVC()
-        addChannel.modalPresentationStyle = .custom
-        present(addChannel, animated: true, completion: nil)
+        // Check to make sure we are logged in before allowing to add a channel
+        if AuthService.instance.isLoggedIn {
+            // Create and present the addChannelVC in a modal presentation
+            let addChannel = AddChannelVC()
+            addChannel.modalPresentationStyle = .custom
+            present(addChannel, animated: true, completion: nil)
+        }
     }
     
     @IBAction func loginBtnPressed(_ sender: Any) {
@@ -78,6 +87,7 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             loginBtn.setTitle("Login", for: .normal)
             avatarImg.image = UIImage(named: "menuProfileIcon")
             avatarImg.backgroundColor = UIColor.clear
+            tableView.reloadData()
         }
 
     }
@@ -101,5 +111,19 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // Required to implement for UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return MessageService.instance.channels.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Retreiving the channel object from the selected Indexpath.row and setting the selectedChannel to it
+        let channel = MessageService.instance.channels[indexPath.row]
+        MessageService.instance.selectedChannel = channel
+
+        // Sending a notification to let others (ChatVC) know that a channel has been selected so it can react to the news
+        NotificationCenter.default.post(name: NOTIF_CHANNEL_SELECTED, object: nil)
+        
+        // Showing the chart window once a chennel is selected
+        self.revealViewController().revealToggle(animated: true)
+        
     }
 }

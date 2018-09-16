@@ -16,6 +16,7 @@ class MessageService {
     
     // Define the array that will hold our loaded channels
     var channels = [Channel]()
+    var selectedChannel : Channel?
     
     func getAllChannels(completion: @escaping CompletionHandler) {
         
@@ -54,7 +55,9 @@ class MessageService {
                 } catch let error {
                     debugPrint(error as Any)
                 }
-                print(self.channels[0].channelTitle)
+
+                // After loading the channels, fire off a notification to let any listeners (ChannelVC) know
+                NotificationCenter.default.post(name: NOTIF_CHANNELS_LOADED, object: nil)
                 
                 completion(true)
             } else {
@@ -64,5 +67,9 @@ class MessageService {
             }
         }
 
+    }
+    
+    func clearChannels() {
+        channels.removeAll()
     }
 }

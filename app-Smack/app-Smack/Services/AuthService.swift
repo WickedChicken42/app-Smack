@@ -215,6 +215,8 @@ class AuthService {
         self.userEmail = ""
         
         UserDataService.instance.clearUserData()
+        MessageService.instance.clearChannels()
+        
     }
 
 }

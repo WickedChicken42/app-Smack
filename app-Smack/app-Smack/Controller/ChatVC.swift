@@ -14,6 +14,7 @@ import UIKit
 class ChatVC: UIViewController {
 
     @IBOutlet var menuBtn: UIButton!
+    @IBOutlet var channelNameLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,17 +26,46 @@ class ChatVC: UIViewController {
         view.addGestureRecognizer(revealViewController().panGestureRecognizer())
         // Allows for tapping the screen to close re-slide the screen back
         view.addGestureRecognizer(revealViewController().tapGestureRecognizer())
+
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatVC.userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(ChatVC.channelSelected(_:)), name: NOTIF_CHANNEL_SELECTED, object: nil)
+
         if AuthService.instance.isLoggedIn {
             AuthService.instance.findUserByEmail(completion: { (success) in
                 NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
             })
         }
+        
+
+    }
+
+    @objc func userDataDidChange(_ notif: Notification) {
+        setupUserInfo()
+    }
+    
+    @objc func channelSelected(_ notif: Notification) {
+        updateWithChannel()
+    }
+
+    func setupUserInfo() {
+        if AuthService.instance.isLoggedIn {
+            onLoginGetMessages()
+        } else {
+            channelNameLbl.text = "Please Log In"
+        }
+    }
+    
+    func onLoginGetMessages() {
         MessageService.instance.getAllChannels { (success) in
             if success {
-                
+                // Do Stuff
             }
         }
     }
-
+    
+    func updateWithChannel() {
+        let channelName = MessageService.instance.selectedChannel?.channelTitle ?? ""
+        channelNameLbl.text = "#" + channelName
+    }
 }
