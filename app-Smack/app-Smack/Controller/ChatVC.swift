@@ -11,19 +11,31 @@ import UIKit
 // USING SWRevealViewController
 // To make this work, the front (this one) showing VC's segue from the root VC to this one MUST be named "sw_front" so that the SWRevealViewController knows it.
 
-class ChatVC: UIViewController {
+class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet var menuBtn: UIButton!
     @IBOutlet var channelNameLbl: UILabel!
     @IBOutlet var messageTxtbox: UITextField!
+    
+    @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         view.bindToKeyboard()
+
+        // Addind the support to clear the keyboard when tapped outside of it
         let tap = UITapGestureRecognizer(target: self, action: #selector(ChatVC.handleTap))
         view.addGestureRecognizer(tap)
+        
+        // Required to support the TableView and the protocols UITableViewDelegate, UITableViewDataSource
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        // Added to support dynamically sized row based on the amount of text in the messageLbl
+        tableView.estimatedRowHeight = 80
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         menuBtn.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
 
@@ -90,7 +102,9 @@ class ChatVC: UIViewController {
     func getMessages() {
         guard let channelID = MessageService.instance.selectedChannel?.id else { return }
         MessageService.instance.findAllMessagesForChannel(channelID: channelID) { (success) in
-            // Do Something
+            if success {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -108,6 +122,28 @@ class ChatVC: UIViewController {
             
         }
         
+    }
+    
+    // Required to support the TableView and the protocols UITableViewDelegate, UITableViewDataSource
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "messageCell", for: indexPath) as? MessageCell {
+            let message = MessageService.instance.messages[indexPath.row]
+            cell.configureCell(messageItem: message)
+            return cell
+        } else {
+            return UITableViewCell()
+        }
+        
+    }
+    
+    // Required to support the TableView and the protocols UITableViewDelegate, UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    // Required to support the TableView and the protocols UITableViewDelegate, UITableViewDataSource
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return MessageService.instance.messages.count
     }
     
 }
