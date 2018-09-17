@@ -15,11 +15,16 @@ class ChatVC: UIViewController {
 
     @IBOutlet var menuBtn: UIButton!
     @IBOutlet var channelNameLbl: UILabel!
+    @IBOutlet var messageTxtbox: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        view.bindToKeyboard()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(ChatVC.handleTap))
+        view.addGestureRecognizer(tap)
+        
         menuBtn.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
 
         // Allows for drag panning of the screen
@@ -40,6 +45,11 @@ class ChatVC: UIViewController {
 
     }
 
+    @objc func handleTap() {
+        
+        view.endEditing(true)
+    }
+ 
     @objc func userDataDidChange(_ notif: Notification) {
         setupUserInfo()
     }
@@ -83,4 +93,21 @@ class ChatVC: UIViewController {
             // Do Something
         }
     }
+    
+    @IBAction func sendMessagePressed(_ sender: Any) {
+    
+        if AuthService.instance.isLoggedIn {
+            guard let channelID = MessageService.instance.selectedChannel?.id else { return }
+            guard let message = messageTxtbox.text else { return }
+            SocketService.instance.addMessage(messageText: message, userID: UserDataService.instance.id, channelID: channelID) { (success) in
+                if success {
+                    self.messageTxtbox.text = ""
+                    self.messageTxtbox.resignFirstResponder()
+                }
+            }
+            
+        }
+        
+    }
+    
 }
