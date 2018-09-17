@@ -19,6 +19,7 @@ let URL_LOGIN = BASE_URL + "account/login"
 let URL_ADD_USER = BASE_URL + "user/add"
 let URL_GET_USER_BY_EMAIL = BASE_URL + "/user/byEmail/"
 let URL_GET_ALL_CHANNELS = BASE_URL + "channel"
+let URL_GET_MESSAGES = BASE_URL + "message/byChannel/"
 
 let TO_LOGIN = "toLogin"
 let TO_CREATE_ACCOUNT = "toCreateAccount"

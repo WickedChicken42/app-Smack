@@ -59,7 +59,14 @@ class ChatVC: UIViewController {
     func onLoginGetMessages() {
         MessageService.instance.getAllChannels { (success) in
             if success {
-                // Do Stuff
+                // Performing a retreival of channels. If there are any, retreive the messages of the first channel in the list
+                // ** Dumb Workflow, it should save a last selected channel and update with that data
+                if MessageService.instance.channels.count > 0 {
+                    MessageService.instance.selectedChannel = MessageService.instance.channels[0]
+                    self.updateWithChannel()
+                } else {
+                    self.channelNameLbl.text = "No channels available"
+                }
             }
         }
     }
@@ -67,5 +74,13 @@ class ChatVC: UIViewController {
     func updateWithChannel() {
         let channelName = MessageService.instance.selectedChannel?.channelTitle ?? ""
         channelNameLbl.text = "#" + channelName
+        getMessages()
+    }
+    
+    func getMessages() {
+        guard let channelID = MessageService.instance.selectedChannel?.id else { return }
+        MessageService.instance.findAllMessagesForChannel(channelID: channelID) { (success) in
+            // Do Something
+        }
     }
 }

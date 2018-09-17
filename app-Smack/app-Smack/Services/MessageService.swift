@@ -16,6 +16,7 @@ class MessageService {
     
     // Define the array that will hold our loaded channels
     var channels = [Channel]()
+    var messages = [Message]()
     var selectedChannel : Channel?
     
     func getAllChannels(completion: @escaping CompletionHandler) {
@@ -36,6 +37,7 @@ class MessageService {
             if response.result.error == nil {
                 // *** The SwiftyJSON way to process JSON
                 guard let data = response.data else { return }
+
 // The classic Swift 3 way using Swifty
 //                if let json = JSON(data: data).array {
 //                    for item in json {
@@ -72,4 +74,41 @@ class MessageService {
     func clearChannels() {
         channels.removeAll()
     }
+
+    func findAllMessagesForChannel(channelID: String, completion: @escaping CompletionHandler) {
+        
+        // Define the header to be used with the Register posting
+        let header = [
+            "Content-type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + AuthService.instance.authToken
+        ]
+        
+        // No body needed in the GET request
+
+        Alamofire.request(URL_GET_MESSAGES + channelID, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: header).responseJSON { (response) in
+            if response.result.error == nil {
+                self.clearMessages()
+                
+                guard let data = response.data else { return }
+
+                // The new Swift 4 Decodable way - using a model with the JSON elements and computer properites for nice coding
+                do {
+                    self.messages = try JSONDecoder().decode([Message].self, from: data)
+                } catch let error {
+                    debugPrint(error as Any)
+                }
+
+                completion(true)
+                
+            } else {
+                debugPrint(response.result.error as Any)
+                completion(false)
+            }
+        }
+    }
+    
+    func clearMessages() {
+        messages.removeAll()
+    }
 }
+
