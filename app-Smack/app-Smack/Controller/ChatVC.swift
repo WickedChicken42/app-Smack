@@ -16,7 +16,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet var menuBtn: UIButton!
     @IBOutlet var channelNameLbl: UILabel!
     @IBOutlet var messageTxtbox: UITextField!
-    
+    @IBOutlet var sendBtn: UIButton!
     @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -38,7 +38,10 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.rowHeight = UITableViewAutomaticDimension
         
         menuBtn.addTarget(revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)), for: .touchUpInside)
-
+        
+        // The initial state of the send button should be Hidden
+        sendBtn.isHidden = true
+        
         // Allows for drag panning of the screen
         view.addGestureRecognizer(revealViewController().panGestureRecognizer())
         // Allows for tapping the screen to close re-slide the screen back
@@ -47,6 +50,18 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         NotificationCenter.default.addObserver(self, selector: #selector(ChatVC.userDataDidChange(_:)), name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatVC.channelSelected(_:)), name: NOTIF_CHANNEL_SELECTED, object: nil)
+
+        SocketService.instance.getChatMessage { (success) in
+            if success {
+                self.tableView.reloadData()
+
+                // auto-scrolls the view so that the last message is visible at the bottom of the list
+                if MessageService.instance.messages.count > 0 {
+                    let endIndexPath = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
+                    self.tableView.scrollToRow(at: endIndexPath, at: .bottom, animated: false)
+                }
+            }
+        }
 
         if AuthService.instance.isLoggedIn {
             AuthService.instance.findUserByEmail(completion: { (success) in
@@ -75,6 +90,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             onLoginGetMessages()
         } else {
             channelNameLbl.text = "Please Log In"
+            tableView.reloadData()
         }
     }
     
@@ -144,6 +160,16 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // Required to support the TableView and the protocols UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return MessageService.instance.messages.count
+    }
+    
+    // Adding support to only show the Send button if the user is typing a message
+    @IBAction func messageBoxEditing(_ sender: Any) {
+        
+        if messageTxtbox.text == "" {
+            sendBtn.isHidden = true
+        } else {
+            sendBtn.isHidden = false
+        }
     }
     
 }

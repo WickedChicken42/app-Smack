@@ -82,9 +82,12 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="messageBoxEditing:" destination="eq2-vw-cS9" eventType="editingChanged" id="VBu-J3-HaB"/>
+                                </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4n-dM-bzL">
-                                <rect key="frame" x="337" y="632" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4n-dM-bzL">
+                                <rect key="frame" x="337" y="630" width="30" height="30"/>
                                 <state key="normal" image="send"/>
                                 <connections>
                                     <action selector="sendMessagePressed:" destination="eq2-vw-cS9" eventType="touchUpInside" id="bCX-YO-bzr"/>
@@ -173,6 +176,7 @@
                         <outlet property="channelNameLbl" destination="NJ5-fC-0rk" id="lar-dE-26Y"/>
                         <outlet property="menuBtn" destination="bmJ-VI-1rH" id="7Qu-jS-63t"/>
                         <outlet property="messageTxtbox" destination="WkB-QH-ZDv" id="EzL-vr-Ffc"/>
+                        <outlet property="sendBtn" destination="P4n-dM-bzL" id="I2f-oY-kN5"/>
                         <outlet property="tableView" destination="CRH-UF-UEr" id="7MB-dr-7h5"/>
                     </connections>
                 </viewController>

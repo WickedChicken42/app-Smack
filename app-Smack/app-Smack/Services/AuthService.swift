@@ -216,6 +216,7 @@ class AuthService {
         
         UserDataService.instance.clearUserData()
         MessageService.instance.clearChannels()
+        MessageService.instance.clearMessages()
         
     }
 
