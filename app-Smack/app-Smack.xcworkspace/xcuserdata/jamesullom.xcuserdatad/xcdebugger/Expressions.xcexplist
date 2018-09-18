@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "closure #2 in ChatVC.viewDidLoad():ChatVC.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "UserDataService.instance.name">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in AuthService.findUserByEmail(completion:):AuthService.swift">
          <PersistentStrings>
             <PersistentString

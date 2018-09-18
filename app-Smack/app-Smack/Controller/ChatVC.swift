@@ -18,6 +18,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet var messageTxtbox: UITextField!
     @IBOutlet var sendBtn: UIButton!
     @IBOutlet var tableView: UITableView!
+    @IBOutlet var typingUserLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,10 +52,17 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         NotificationCenter.default.addObserver(self, selector: #selector(ChatVC.channelSelected(_:)), name: NOTIF_CHANNEL_SELECTED, object: nil)
 
-        SocketService.instance.getChatMessage { (success) in
-            if success {
-                self.tableView.reloadData()
 
+        SocketService.instance.getChatMessage { (newMessage) in
+            
+            if newMessage.channelID == MessageService.instance.selectedChannel?.id && AuthService.instance.isLoggedIn {
+
+                // Add the message to the Messages app
+                MessageService.instance.messages.append(newMessage)
+
+                // Reload the data
+                self.tableView.reloadData()
+                
                 // auto-scrolls the view so that the last message is visible at the bottom of the list
                 if MessageService.instance.messages.count > 0 {
                     let endIndexPath = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
@@ -63,13 +71,55 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
         }
 
+//        SocketService.instance.getChatMessage { (success) in
+//            if success {
+//                self.tableView.reloadData()
+//
+//                // auto-scrolls the view so that the last message is visible at the bottom of the list
+//                if MessageService.instance.messages.count > 0 {
+//                    let endIndexPath = IndexPath(row: MessageService.instance.messages.count - 1, section: 0)
+//                    self.tableView.scrollToRow(at: endIndexPath, at: .bottom, animated: false)
+//                }
+//            }
+//        }
+        
+        // Gets the users who are typing in their chat app
+        SocketService.instance.getTypingUsers { (typingUsers) in
+            
+            guard let channelID = MessageService.instance.selectedChannel?.id else { return }
+            var names = ""
+            var numberOfTypers = 0
+            
+            // Loop through the returned dictionary to access the users and the channel they were tying on
+            for (typingUser, channel) in typingUsers {
+                // Only interested in people not me in my current channel
+                if typingUser != UserDataService.instance.name && channel == channelID {
+                    // Add the person to the list
+                    if numberOfTypers == 0 {
+                        names = typingUser
+                    } else {
+                        names += ", " + typingUser
+                    }
+                    numberOfTypers += 1
+                }
+            }
+ 
+            // Formatting the typing user label text
+            if numberOfTypers > 0 && AuthService.instance.isLoggedIn == true {
+                var verb = "is"
+                if numberOfTypers > 1 { verb = "are"}
+                
+                self.typingUserLbl.text = names + " " + verb + " typing a message"
+            } else {
+                self.typingUserLbl.text = ""
+            }
+        }
+
         if AuthService.instance.isLoggedIn {
             AuthService.instance.findUserByEmail(completion: { (success) in
                 NotificationCenter.default.post(name: NOTIF_USER_DATA_DID_CHANGE, object: nil)
             })
         }
-        
-
     }
 
     @objc func handleTap() {
@@ -133,6 +183,9 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 if success {
                     self.messageTxtbox.text = ""
                     self.messageTxtbox.resignFirstResponder()
+                    
+                    // Send the socket message that we have stopped typing due to having sent the message
+                    SocketService.instance.socket.emit("stopType", UserDataService.instance.name, channelID)
                 }
             }
             
@@ -163,12 +216,17 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     // Adding support to only show the Send button if the user is typing a message
+    // Added the ability to emit the start and stop notifications to the server that we are typing (or not) so that it can be sent to other chatters
     @IBAction func messageBoxEditing(_ sender: Any) {
+        
+        guard let channelID = MessageService.instance.selectedChannel?.id else {return}
         
         if messageTxtbox.text == "" {
             sendBtn.isHidden = true
+            SocketService.instance.socket.emit("stopType", UserDataService.instance.name, channelID)
         } else {
             sendBtn.isHidden = false
+            SocketService.instance.socket.emit("startType", UserDataService.instance.name, channelID)
         }
     }
     

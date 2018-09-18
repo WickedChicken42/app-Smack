@@ -63,7 +63,7 @@ class SocketService: NSObject {
     }
 
     // Receives any new messages from the server via sockets
-    func getChatMessage(completion: @escaping CompletionHandler) {
+    func getChatMessage(completion: @escaping (_ newMessage: Message) -> Void) {
         
         socket.on("messageCreated") { (dataArray, ack) in
             guard let msgBody = dataArray[0] as? String else {return}
@@ -74,13 +74,21 @@ class SocketService: NSObject {
             guard let messageID = dataArray[6] as? String else {return}
             guard let msgTimeStamp = dataArray[7] as? String else {return}
 
-            if channelID == MessageService.instance.selectedChannel?.id && AuthService.instance.isLoggedIn {
-                let newMessage = Message(messageBody: msgBody, userId: "", channelId: channelID, userName: userName, userAvatar: userAvatar, userAvatarColor: userAvatarColor, mTimeStamp: msgTimeStamp, id: messageID)
-                MessageService.instance.messages.append(newMessage)
-                completion(true)
-            } else {
-                completion(false)
-            }
+            let newMessage = Message(messageBody: msgBody, userId: "", channelId: channelID, userName: userName, userAvatar: userAvatar, userAvatarColor: userAvatarColor, mTimeStamp: msgTimeStamp, id: messageID)
+
+            completion(newMessage)
         }
     }
+    
+    // Function to handle the retreival of users who are typing with a Dictionary of Username and ChannelID being passed in the Closure
+    func getTypingUsers(_ completiionHandler: @escaping (_ typingUsers: [String:String]) -> Void) {
+        
+        // Open the socket to receive the userTypingUpdate notifications from the server
+        socket.on("userTypingUpdate") { (dataArray, ack) in
+            guard let typingUsers = dataArray[0] as? [String:String] else {return}
+            completiionHandler(typingUsers)
+            
+        }
+    }
+    
 }

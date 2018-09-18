@@ -33,8 +33,17 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
         NotificationCenter.default.addObserver(self, selector: #selector(ChannelVC.channelsLoaded(_:)), name: NOTIF_CHANNELS_LOADED, object: nil)
 
+        // Listening for new Channels
         SocketService.instance.getChannel { (success) in
             if success {
+                self.tableView.reloadData()
+            }
+        }
+        
+        // Listening for new messages so we can effect the Channel look if its an unread message
+        SocketService.instance.getChatMessage { (newMessage) in
+            if newMessage.channelID != MessageService.instance.selectedChannel?.id && AuthService.instance.isLoggedIn {
+                MessageService.instance.unreadChannels.append(newMessage.channelID)
                 self.tableView.reloadData()
             }
         }
@@ -124,6 +133,12 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         // Showing the chart window once a chennel is selected
         self.revealViewController().revealToggle(animated: true)
+        
+        if MessageService.instance.unreadChannels.count > 0 {
+            let indexAt = MessageService.instance.unreadChannels.firstIndex(of: channel.id)
+            MessageService.instance.unreadChannels.remove(at: indexAt!)
+            tableView.reloadData()
+        }
         
     }
 }
