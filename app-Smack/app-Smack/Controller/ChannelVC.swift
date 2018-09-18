@@ -134,6 +134,7 @@ class ChannelVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Showing the chart window once a chennel is selected
         self.revealViewController().revealToggle(animated: true)
         
+        // Looking to see if the newly selected chasnnel is in the unreadChannels list, if so we remove it
         if MessageService.instance.unreadChannels.count > 0 {
             let indexAt = MessageService.instance.unreadChannels.firstIndex(of: channel.id)
             MessageService.instance.unreadChannels.remove(at: indexAt!)

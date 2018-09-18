@@ -62,7 +62,7 @@ class SocketService: NSObject {
 
     }
 
-    // Receives any new messages from the server via sockets
+    // Receives any new messages from the server via sockets and send the newMessage object into the Completion Handler
     func getChatMessage(completion: @escaping (_ newMessage: Message) -> Void) {
         
         socket.on("messageCreated") { (dataArray, ack) in

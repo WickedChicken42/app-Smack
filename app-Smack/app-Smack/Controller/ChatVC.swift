@@ -57,7 +57,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             
             if newMessage.channelID == MessageService.instance.selectedChannel?.id && AuthService.instance.isLoggedIn {
 
-                // Add the message to the Messages app
+                // Add the new message to the Messages app
                 MessageService.instance.messages.append(newMessage)
 
                 // Reload the data

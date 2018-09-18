@@ -35,7 +35,7 @@ class ChannelCell: UITableViewCell {
         let title = channel.channelTitle ?? ""
         channelName.text = "#" + title
         
-        // Set the default font
+        // Checking to see of this channel is in the unreadChannels list, if so change the font to indicaste there are unread messages
         channelName.font = UIFont(name: "HelveticaNeue-Regular", size: 17)
         for id in MessageService.instance.unreadChannels {
             if id == channel.id {
